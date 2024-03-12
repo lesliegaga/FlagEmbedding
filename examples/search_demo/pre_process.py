@@ -28,7 +28,7 @@ class EmbDataset(Dataset):
 
     def __getitem__(self, item):
         sentences = self.data[item]['contents']
-        batch_dict = self.tokenizer(sentences, max_length=512, padding=True, truncation=True, return_tensors='pt')
+        batch_dict = self.tokenizer(sentences, max_length=512, padding=True, truncation=True, return_tensors='pt', return_token_type_ids=True)
         attention_mask = batch_dict['attention_mask'][0].tolist() + [0] * (512 - len(batch_dict['attention_mask'][0]))
         token_type_ids = batch_dict['token_type_ids'][0].tolist() + [0] * (512 - len(batch_dict['token_type_ids'][0]))
         input_ids = batch_dict['input_ids'][0].tolist() + [0] * (512 - len(batch_dict['token_type_ids'][0]))
@@ -44,7 +44,7 @@ def inference(json_path, emb_path, model_path):
     else:
         device = torch.device("cpu")
 
-    tokenizer = AutoTokenizer.from_pretrained(model_path, return_token_type_ids=True)
+    tokenizer = AutoTokenizer.from_pretrained(model_path)
 
     model = AutoModel.from_pretrained(model_path).to(device)
     model = torch.nn.parallel.DataParallel(model)

@@ -104,7 +104,8 @@ if __name__ == "__main__":
     os.makedirs(collection_path, exist_ok=True)
     os.makedirs(index_path, exist_ok=True)
     os.makedirs(emb_path, exist_ok=True)
-    dataset = load_dataset(f"Cohere/wikipedia-22-12", 'zh', split='train')
+    # dataset = load_dataset(f"Cohere/wikipedia-22-12", 'zh', split='train')
+    dataset = load_dataset(f"/home/tongyan.zjy/hf_hub/Cohere--wikipedia-22-12", 'zh', split='train')
     dataset.save_to_disk(dataset_path)
     build_bm25_index(dataset, collection_path, index_path)
     inference(os.path.join(collection_path, 'documents.json'),

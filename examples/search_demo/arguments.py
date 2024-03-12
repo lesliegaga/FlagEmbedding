@@ -4,7 +4,7 @@ from dataclasses import dataclass, field
 @dataclass
 class ModelArguments:
     model_name_or_path: str = field(
-        default='BAAI/bge-large-zh-noinstruct',
+        default='BAAI/bge-m3',
         metadata={"help": "Path to pretrained model or model identifier from huggingface.co/models"}
     )
 

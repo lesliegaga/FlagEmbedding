@@ -44,7 +44,7 @@ def inference(json_path, emb_path, model_path):
     else:
         device = torch.device("cpu")
 
-    tokenizer = AutoTokenizer.from_pretrained(model_path)
+    tokenizer = AutoTokenizer.from_pretrained(model_path, return_token_type_ids=True)
 
     model = AutoModel.from_pretrained(model_path).to(device)
     model = torch.nn.parallel.DataParallel(model)

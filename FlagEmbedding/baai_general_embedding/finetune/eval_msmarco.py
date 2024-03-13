@@ -11,8 +11,8 @@ from FlagEmbedding import FlagModel
 
 logger = logging.getLogger(__name__)
 
-import os
-os.environ['CURL_CA_BUNDLE'] = ''
+# import os
+# os.environ['CURL_CA_BUNDLE'] = ''
 # HF_DATASETS_OFFLINE
 
 

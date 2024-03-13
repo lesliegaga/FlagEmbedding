@@ -11,6 +11,10 @@ from FlagEmbedding import FlagModel
 
 logger = logging.getLogger(__name__)
 
+import os
+os.environ['CURL_CA_BUNDLE'] = ''
+# HF_DATASETS_OFFLINE
+
 
 @dataclass
 class Args:
@@ -184,8 +188,8 @@ def main():
     parser = HfArgumentParser([Args])
     args: Args = parser.parse_args_into_dataclasses()[0]
     
-    eval_data = datasets.load_dataset("namespace-Pt/msmarco", data_dir="/home/tongyan.zjy/hf_hub/datasets--namespace-Pt--msmarco", split="dev")
-    corpus = datasets.load_dataset("namespace-Pt/msmarco-corpus", data_dir="/home/tongyan.zjy/hf_hub/datasets--namespace-Pt--msmarco-corpus", split="train")
+    eval_data = datasets.load_dataset("/home/tongyan.zjy/hf_hub/datasets--namespace-Pt--msmarco", split="dev")
+    corpus = datasets.load_dataset("/home/tongyan.zjy/hf_hub/datasets--namespace-Pt--msmarco-corpus", split="train")
 
     model = FlagModel(
         args.encoder, 

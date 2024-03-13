@@ -184,8 +184,8 @@ def main():
     parser = HfArgumentParser([Args])
     args: Args = parser.parse_args_into_dataclasses()[0]
     
-    eval_data = datasets.load_dataset("namespace-Pt/msmarco", split="dev")
-    corpus = datasets.load_dataset("namespace-Pt/msmarco-corpus", split="train")
+    eval_data = datasets.load_dataset("~/.cache/huggingface/hub/datasets--namespace-Pt--msmarco", split="dev")
+    corpus = datasets.load_dataset("~/.cache/huggingface/hub/datasets--namespace-Pt--msmarco-corpus", split="train")
 
     model = FlagModel(
         args.encoder, 

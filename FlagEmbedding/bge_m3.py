@@ -62,6 +62,17 @@ class BGEM3FlagModel:
                 self.model.model = torch.nn.DataParallel(self.model.model)
         else:
             self.num_gpus = 1
+            key = ":"
+            pos = device.rfind(key)
+            if pos != -1:
+                device_list = device[pos + len(key):].split(",")
+            else:
+                device_list = [device]
+            if len(device_list) > 1:
+                self.num_gpus = len(device_list)
+            if self.num_gpus > 1:
+                print(f"----------using {self.num_gpus}*GPUs:{device_list}----------")
+                self.model.model = torch.nn.DataParallel(self.model.model, device_ids=[int(x) for x in device_list])
 
         self.model.eval()
 

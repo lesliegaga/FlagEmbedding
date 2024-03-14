@@ -73,8 +73,13 @@ class Args:
         metadata={'help': 'Device to use for inference.'}
     )
 
+    faiss_device_list: str = field(
+        default=None,
+        metadata={'help': 'Device to use for faiss.'}
+    )
 
-def index(model: BGEM3FlagModel, corpus: datasets.Dataset, batch_size: int = 256, max_length: int=512, index_factory: str = "Flat", save_path: str = None, save_embedding: bool = False, load_embedding: bool = False):
+
+def index(model: BGEM3FlagModel, corpus: datasets.Dataset, device_list=None, batch_size: int = 256, max_length: int=512, index_factory: str = "Flat", save_path: str = None, save_embedding: bool = False, load_embedding: bool = False):
     """
     1. Encode the entire corpus into dense embeddings; 
     2. Create faiss index; 
@@ -122,7 +127,11 @@ def index(model: BGEM3FlagModel, corpus: datasets.Dataset, batch_size: int = 256
         co = faiss.GpuMultipleClonerOptions()
         co.useFloat16 = True
         # faiss_index = faiss.index_cpu_to_gpu(faiss.StandardGpuResources(), 0, faiss_index, co)
-        faiss_index = faiss.index_cpu_to_all_gpus(faiss_index, co)
+
+        if device_list is None:
+            faiss_index = faiss.index_cpu_to_all_gpus(faiss_index, co)
+        else:
+            faiss_index = faiss.index_cpu_to_gpus_list(faiss_index, co, [int(i) for i in device_list.split(",")])
 
     # NOTE: faiss only accepts float32
     logger.info("Adding embeddings...")
@@ -208,7 +217,8 @@ def main():
     
     faiss_index = index(
         model=model, 
-        corpus=corpus, 
+        corpus=corpus,
+        device_list=args.faiss_device_list,
         batch_size=args.batch_size,
         max_length=args.max_passage_length,
         index_factory=args.index_factory,

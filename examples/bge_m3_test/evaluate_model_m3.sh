@@ -4,5 +4,5 @@ python -m FlagEmbedding.baai_general_embedding.finetune.eval_msmarco_bgem3 \
 --fp16 \
 --save_embedding \
 --save_path eval_msmarco_m3/embeddings.memmap \
---device 1 \
+--device cuda:1 \
 --k 100

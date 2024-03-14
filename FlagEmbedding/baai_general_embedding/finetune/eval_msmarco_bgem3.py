@@ -65,7 +65,11 @@ class Args:
         metadata={'help': 'Path to save embeddings.'}
     )
     device: str = field(
-        default="",
+        default=None,
+        metadata={'help': 'Device to use for inference.'}
+    )
+    device_list: str = field(
+        default=None,
         metadata={'help': 'Device to use for inference.'}
     )
 
@@ -198,7 +202,8 @@ def main():
     model = BGEM3FlagModel(
         args.encoder,
         use_fp16=args.fp16,
-        device=args.device if len(args.device) >0 else None
+        device=args.device,
+        device_list=args.device_list
     )
     
     faiss_index = index(
